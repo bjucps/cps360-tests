@@ -1,4 +1,6 @@
-sudo apt-get update && apt-get install -y qemu qemu-kvm
+sudo apt-get update >/dev/null
+sudo apt-get install -y qemu qemu-kvm >/dev/null
+
 require-files Makefile 
 
 # Copy pstat.h to user folder
