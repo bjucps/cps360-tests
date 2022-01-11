@@ -25,9 +25,10 @@ do-compile make
 exit-if-must-pass-tests-failed
  
 # Can't use timeout with qemu, so use sleep to simulate.
+echo -e "\nRunning my tests ..."
 CPUS=1 make run &
 QPID=$!
-sleep 10
+sleep 20
 kill $QPID
 
 require-files  --test-message "Report submitted" REPORT.md 

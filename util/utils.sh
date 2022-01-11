@@ -73,6 +73,7 @@ function run-tests {
           sudo cp --force --recursive ~/my-packages/* /
         else
           echo "Installing required packages..."
+          sudo apt-get update >/dev/null
           sudo apt-get install -yq $INSTALL_PACKAGES
           if [ -z "$NO_PACKAGE_CACHE" ]; then
             # Save installed files to my-packages to be cached
