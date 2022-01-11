@@ -67,7 +67,7 @@ function run-tests {
       . $TEST_DIR/_config.sh
       if [ -n "$INSTALL_PACKAGES" -a -z "$NO_INSTALL_PACKAGES" ]; then
         # Install required packages
-        if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
+        if [[ "$MY_PKG_CACHE_HIT" == 'true' -a -r ~/my-packages ]]; then
           # Install package files from cache
           echo "Restoring package files from cache..."
           sudo cp --force --recursive ~/my-packages/* /
