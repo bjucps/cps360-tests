@@ -1,5 +1,5 @@
-apt-get update >/dev/null
-apt-get install -q qemu qemu-kvm >/dev/null
+sudo apt-get update >/dev/null
+sudo apt-get install -q qemu qemu-kvm >/dev/null
 
 require-files Makefile 
 
