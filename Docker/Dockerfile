@@ -4,6 +4,6 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-    && apt-get install -y curl unzip python3 build-essential qemu qemu-kvm \
+    && apt-get install -y curl unzip python3 build-essential qemu qemu-kvm git \
     && apt-get clean
 

@@ -46,9 +46,9 @@ def test_mycat():
   TESTS = [
     ('No arguments', './my-cat', 0, ''),
     ('Missing file', './my-cat notpresent', 1, 'my-cat: cannot open file'),
-    ('Single file', './my-cat project1_files/file1.txt', 0, '''some data\nline 2'''),
-    ('Multiple files', './my-cat project1_files/file1.txt project1_files/file2.txt project1_files/file3.txt', 0, '''some data\nline 2\nfile 2\nfile 3'''),
-    ('Big file', './my-cat project1_files/bigfile.txt', 0, 'X' * 4000000)
+    ('Single file', './my-cat test_files/file1.txt', 0, '''some data\nline 2'''),
+    ('Multiple files', './my-cat test_files/file1.txt test_files/file2.txt test_files/file3.txt', 0, '''some data\nline 2\nfile 2\nfile 3'''),
+    ('Big file', './my-cat test_files/bigfile.txt', 0, 'X' * 4000000)
   ]
 
   run_tests(TESTS)
@@ -65,8 +65,8 @@ def test_mygrep():
   TESTS = [
     ('No arguments', './my-grep < /dev/null', 1, 'my-grep: searchterm [file ...]'),
     ('Missing file', './my-grep foo notpresent < /dev/null', 1, 'my-grep: cannot open file'),
-    ('No input file', './my-grep ne < project1_files/grepfile.txt', 0, 'line 1\nline 2'),
-    ('Multiple files', './my-grep ne project1_files/grepfile.txt project1_files/file1.txt', 0, 'line 1\nline 2\nline 2'),
+    ('No input file', './my-grep ne < test_files/grepfile.txt', 0, 'line 1\nline 2'),
+    ('Multiple files', './my-grep ne test_files/grepfile.txt test_files/file1.txt', 0, 'line 1\nline 2\nline 2'),
   ]
 
   run_tests(TESTS)
@@ -85,7 +85,7 @@ def test_myzip():
 
   TESTS = [
     ('No arguments', './my-zip < /dev/null', 1, 'my-zip: file1 [file2 ...]'),
-    ('One file', './my-zip project1_files/zipme.txt < /dev/null', 0, '\x03\x00\x00\x00a\x01\x00\x00\x00b\x02\x00\x00\x00c'),
+    ('One file', './my-zip test_files/zipme.txt < /dev/null', 0, '\x03\x00\x00\x00a\x01\x00\x00\x00b\x02\x00\x00\x00c'),
   ]
 
   run_tests(TESTS)
@@ -100,7 +100,7 @@ def test_myunzip():
 
   TESTS = [
     ('No arguments', './my-unzip < /dev/null', 1, 'my-unzip: file1 [file2 ...]'),
-    ('One file', './my-unzip project1_files/unzipme.dat < /dev/null', 0, 'aaabcc'),
+    ('One file', './my-unzip test_files/unzipme.dat < /dev/null', 0, 'aaabcc'),
   ]
 
   run_tests(TESTS)
