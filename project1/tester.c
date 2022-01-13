@@ -27,7 +27,7 @@ main(int argc, char *argv[])
   write(fd, TEST_DATA, strlen(TEST_DATA));
   close(fd);
 
-  printf(1, "Testing zip and unzip ... ");
+  printf(1, "\nTesting zip and unzip ... ");
   if(pipe(p) < 0)
       panic("pipe");
   // inspiration for the following came from runcmd() in sh.c
@@ -62,11 +62,12 @@ main(int argc, char *argv[])
     if (strcmp(buf, TEST_DATA) == 0) {
       printf(1, "PASS\n");
     } else {
-      printf(1, "FAIL - wrong output: %s\n", buf);
+      printf(1, "FAIL - wrong output: %s", buf);
     }
   } else {
     printf(1, "FAIL - incorrect number of bytes produced");
   }
+  printf(1, "\n\n");
 
   exit();
 }
