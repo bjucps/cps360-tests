@@ -1,6 +1,3 @@
-sudo apt-get update >/dev/null
-sudo apt-get install -y qemu qemu-kvm >/dev/null
-
 require-files Makefile 
 
 # Copy pstat.h to user folder
@@ -25,10 +22,11 @@ do-compile make
 exit-if-must-pass-tests-failed
  
 # Can't use timeout with qemu, so use sleep to simulate.
-echo -e "\nRunning my tests ..."
+let timeout=25
+echo -e "\nRunning my tests with timeout $timeout secs ..."
 CPUS=1 make run &
 QPID=$!
-sleep 20
+sleep $timeout
 kill $QPID
 
 require-files  --test-message "Report submitted" REPORT.md 

@@ -1,2 +1,2 @@
 INSTALL_PACKAGES="qemu qemu-kvm"
-TIMEOUT=0
+TIMEOUT=40
