@@ -19,19 +19,21 @@ fi
 cd submission
 export SUBMISSION_DIR=$(pwd)
 
-# Don't check the initial commit
-if git log --pretty=oneline -n 1 | grep -q "Initial commit"
-then
-  echo "Initial commit not checked."
-  exit 0
-fi
-
 export PROJECT=$(get-project-name)
 echo "$PROJECT submission detected"
 
 export TEST_DIR=$TEST_BASE_DIR/$PROJECT
 
 [ -r $TEST_DIR/_config.sh ] && . $TEST_DIR/_config.sh
+
+install-dependencies 2>&1 | tee $LOG_FILE
+
+# Don't check the initial commit
+if git log --pretty=oneline -n 1 | grep -q "Initial commit"
+then
+  echo "Initial commit not checked."
+  exit 0
+fi
 
 # If user submitted a file named _debug, turn on DEBUG
 if [ -r _debug ]

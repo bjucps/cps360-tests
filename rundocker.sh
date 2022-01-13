@@ -17,7 +17,10 @@ fi
 
 export PROJECT=$1
 export TEST_DIR=$TEST_BASE_DIR/$PROJECT
-export NO_INSTALL_PACKAGES=1  # Don't need packages installed when running locally
+
+[ -r $TEST_DIR/_config.sh ] && . $TEST_DIR/_config.sh
+
+#install-dependencies 2>&1 | tee $LOG_FILE
 
 # Cleanup previous test results if we're running in the same Docker container
 test -f $TEST_RESULT_FILE && rm $TEST_RESULT_FILE

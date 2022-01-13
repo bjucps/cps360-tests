@@ -1,6 +1,3 @@
-sudo apt-get update >/dev/null
-sudo apt-get install -q qemu qemu-kvm >/dev/null
-
 require-files Makefile 
 
 for FILE in my-cat my-grep my-zip my-unzip; do

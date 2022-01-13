@@ -54,39 +54,53 @@ function is-local-test {
     [ -z "$GITHUB_WORKFLOW" ]
 }
 
+function install-dependencies {
+
+    if ([ -n "$INSTALL_PACKAGES" ] || [ -r $TEST_DIR/_dependencies.sh ]) && [ -z "$NO_INSTALL_PACKAGES" ]
+    then
+        # Install required packages
+        if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
+            # Install package files from cache
+            echo "Restoring package files from cache..."
+            sudo cp --force --recursive ~/my-packages/* /
+        else
+            if [  -r $TEST_DIR/_dependencies.sh ]
+            then
+                echo "Installing dependencies..."
+                if ! bash $TEST_DIR/_dependencies.sh > /tmp/install_log
+                then
+                    cat /tmp/install_log
+                fi
+            fi
+
+            if [ -n "$INSTALL_PACKAGES" ]
+            then
+                echo "Installing required packages..."
+                sudo apt-get update >/dev/null
+                if ! sudo apt-get install -yq $INSTALL_PACKAGES > /tmp/install_log
+                then
+                    cat /tmp/install_log
+                fi
+            fi
+            if [ -z "$NO_PACKAGE_CACHE" ]; then
+                # Save installed files to my-packages to be cached
+                mkdir -p ~/my-packages
+                for dep in $INSTALL_PACKAGES; do
+                    dpkg -L $dep \
+                        | while IFS= read -r f; do if test -f $f; then echo $f; fi; done \
+                        | xargs cp --parents --target-directory ~/my-packages/
+                done
+            fi
+        fi
+    fi    
+}
+
 # Returns 0 on success, 1 on failure
 function run-tests {
     local BASH_DEBUG_OPT
 
     if [ -n "$DEBUG" ]; then
       BASH_DEBUG_OPT=-x
-    fi
-
-    # Read test config if it exists
-    if [ -r $TEST_DIR/_config.sh ]; then
-      . $TEST_DIR/_config.sh
-      if [ -n "$INSTALL_PACKAGES" -a -z "$NO_INSTALL_PACKAGES" ]; then
-        # Install required packages
-        if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
-          # Install package files from cache
-          echo "Restoring package files from cache..."
-          sudo cp --force --recursive ~/my-packages/* /
-        else
-          echo "Installing required packages..."
-          sudo apt-get update >/dev/null
-          sudo apt-get install -yq $INSTALL_PACKAGES
-          if [ -z "$NO_PACKAGE_CACHE" ]; then
-            # Save installed files to my-packages to be cached
-            mkdir -p ~/my-packages
-            for dep in $INSTALL_PACKAGES; do
-                dpkg -L $dep \
-                    | while IFS= read -r f; do if test -f $f; then echo $f; fi; done \
-                    | xargs cp --parents --target-directory ~/my-packages/
-            done
-          fi
-        fi
-        
-      fi
     fi
 
     if [ $TIMEOUT -gt 0 ]; then
