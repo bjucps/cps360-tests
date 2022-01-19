@@ -7,4 +7,8 @@ do-compile --expect-exe encrypt.ko make
 
 require-files  --test-message "Compile produced rot47" rot47
 
+run-program --test-message "install.sh runs without error" sudo bash install.sh
+
+run-program --test-message "rot47 runs without error" --showoutputonpass  ./rot47 "The Quick Brown Fox Jumps Over The Lazy Dog."
+
 require-files  --test-message "Report submitted" REPORT.md 
