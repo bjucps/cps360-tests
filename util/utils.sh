@@ -222,6 +222,7 @@ function do-compile {
     local compile_cmd
     local expected_exe
     local testmessage="Successful compile"
+    local testcategory="$CAT_MUST_PASS"
     local opt_check=1
     
     while [ $opt_check -eq 1 ]; do
@@ -229,6 +230,9 @@ function do-compile {
         if [ "$1" = "--always-show-output" ]; then
             always_show=1
             shift
+        elif [ "$1" = "--test-category" ]; then
+            testcategory=$2
+            shift 2
         elif [ "$1" = "--test-message" ]; then
             testmessage=$2
             shift 2
@@ -257,7 +261,7 @@ function do-compile {
         echo "----------------------------------------------------------------"
     fi
 
-    report-result $result "$CAT_MUST_PASS" "$testmessage"
+    report-result $result "$testcategory" "$testmessage"
  
     [ $result = $PASS ]
 }
