@@ -19,40 +19,30 @@ panic(char *s)
 int
 main(int argc, char *argv[])
 {
-  int p[2];
-  char *cmd1[] = { "zip", NULL };
-  char *cmd2[] = { "unzip", NULL };
+  char *cmd1[] = { "zip", "small", NULL };
+  char *cmd2[] = { "unzip", "small.z", NULL };
 
   int fd = open("small", O_CREATE|O_RDWR);
   write(fd, TEST_DATA, strlen(TEST_DATA));
   close(fd);
 
   printf(1, "\nTesting zip and unzip ... ");
-  if(pipe(p) < 0)
-      panic("pipe");
-  // inspiration for the following came from runcmd() in sh.c
+
+  // zip small to small.z
   if(fork() == 0){
-    close(0);
-    open("small", O_RDONLY); // zip reads from this
     close(1);
-    dup(p[1]);  // and writes to the pipe
-    close(p[0]);
-    close(p[1]);
+    open("small.z", O_CREATE|O_RDWR);
     exec(cmd1[0], cmd1);
     exit();
   }
+  wait();
+
+  // now, unzip small.z
   if(fork() == 0){
-    close(0);
-    dup(p[0]); // unzip reads from this and writes to stdout
     close(1);
     open("output",  O_CREATE|O_RDWR); // and writes to this file
-    close(p[0]);
-    close(p[1]);
     exec(cmd2[0], cmd2);
   }
-  close(p[0]);
-  close(p[1]);
-  wait();
   wait();
 
   fd = open("output", O_RDONLY);
