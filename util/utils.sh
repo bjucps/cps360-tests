@@ -63,8 +63,6 @@ function install-dependencies {
             # Install package files from cache
             echo "Restoring package files from cache..."
             sudo cp --force --recursive ~/my-packages/* /
-            find ~/my-packages/*
-            ls -l /usr/bin/qemu-system-i386
         else
             if [  -r $TEST_DIR/_dependencies.sh ]
             then
