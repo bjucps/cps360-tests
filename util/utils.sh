@@ -59,7 +59,7 @@ function install-dependencies {
     if ([ -n "$INSTALL_PACKAGES" ] || [ -r $TEST_DIR/_dependencies.sh ]) && [ -z "$NO_INSTALL_PACKAGES" ]
     then
         # Install required packages
-        if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
+        if [[ "$MY_PKG_CACHE_HIT" == 'true' -a -z "$NO_PACKAGE_CACHE" ]]; then
             # Install package files from cache
             echo "Restoring package files from cache..."
             sudo cp --force --recursive ~/my-packages/* /
