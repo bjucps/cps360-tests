@@ -174,7 +174,7 @@ function require-files {
     fi
 
     overallresult=$PASS
-    for file in $*
+    for file in "$@"
     do
         result=$PASS
         if [ ! -r "$file" ]; then
@@ -193,7 +193,7 @@ function require-pdf {
     local reason
 
     overallresult=$PASS
-    for file in $*
+    for file in "$@"
     do
         echo -en "\nChecking for required PDF $file... "
         if [ ! -r $file ]; then
@@ -246,7 +246,7 @@ function do-compile {
 
     echo -en "\nCompiling: $* ... "
 
-    if detail=$($* 2>&1); then
+    if detail=$("$@" 2>&1); then
         result=$PASS
         if [ -n "$expected_exe" -a ! -e "$expected_exe" ]; then
             result=$FAIL
@@ -324,7 +324,7 @@ function run-program {
 
     echo -en "\nExecuting: $* ... "
     result=$FAIL
-    if output=$(set -o pipefail; $timeout_cmd $* 2>&1 | head -$head_count > __output_orig.log); then
+    if output=$(set -o pipefail; $timeout_cmd "$@" 2>&1 | head -$head_count > __output_orig.log); then
         result=OK
     fi
 
@@ -377,7 +377,7 @@ function forbidden-string-function-check {
 
     [ -r /tmp/forbidden-string-log ] && rm /tmp/forbidden-string-log
     result=$PASS
-    for file in $*
+    for file in "$@"
     do
         for func in strcpy strncpy strcat strncat sprintf
         do
