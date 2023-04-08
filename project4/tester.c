@@ -18,6 +18,8 @@ void my_thread(void *p1, void *p2)
   lock_acquire(&lock);
   printf(1, "%s in critical section", (char*)p1);
   lock_release(&lock);
+
+  exit();
 }
 
 int

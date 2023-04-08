@@ -5,9 +5,6 @@ if [ -e kernel/sign.pl ]; then
   echo "Kernel threads project detected."
   chmod +x kernel/sign.pl
   cp $TEST_DIR/*.c user
-elif [ -e ut_threads.c ]; then
-  echo "User threads project detected."
-  require-files --test-message "ut_threads.h exists" ut_threads.h
 else
   report-error "$MUST_PASS" "No project detected."
 fi
@@ -15,15 +12,19 @@ fi
 exit-if-must-pass-tests-failed
 
 echo "Executing make clean ..."
-make clean
+make clean >/dev/null 2>&1
 
 do-compile make
 
 exit-if-must-pass-tests-failed
 
-if [ -e ut_threads.c ]; then
-  echo "Running user threads test..."
-  run-program --test-message "make test runs without error" --timeout 5 make test
-fi
+# Can't use timeout with qemu, so use sleep to simulate.
+#let timeout=15
+echo -e "\nRunning my tests ..."
+make run &
+QPID=$!
+#sleep $timeout
+#kill $QJOB 2>/dev/null
+wait $QPID
 
 require-files  --test-message "Report submitted" REPORT.md 
