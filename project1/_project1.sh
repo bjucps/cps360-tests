@@ -19,7 +19,7 @@ python3 $TEST_DIR/project1.py
 
 if [ -e zip.c -a -r unzip.c ]; then
   echo -e "\nRunning xv6 zip/unzip test ..."
-  git clone --depth 1 https://github.com/sschaub/cps360
+  git clone --depth 1 https://github.com/bjucps/cps360
   cp *zip.c cps360/xv6/user
   cp $TEST_DIR/makefile.mk cps360/xv6/user
   cp $TEST_DIR/*.c cps360/xv6/user

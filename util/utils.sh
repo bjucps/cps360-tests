@@ -6,7 +6,7 @@ export TEST_BASE_DIR=$BASEDIR/tests
 #export TEST_DIR=   # Must be set by script
 #export SUBMISSION_DIR=   # Must be set by script
 #export PROJECT  # set by rungh.sh
-export TIMEOUT=5  # default timeout in seconds
+export TIMEOUT=${TIMEOUT:-5}  # default timeout in seconds
 export PASS_IMG=https://raw.githubusercontent.com/bjucps/cps360-tests/main/images/pass.png
 export FAIL_IMG=https://raw.githubusercontent.com/bjucps/cps360-tests/main/images/fail.png
 
